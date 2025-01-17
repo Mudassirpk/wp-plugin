@@ -15,10 +15,11 @@ class MP_API
             $name = $_POST['name'];
             $company = $_POST['company'];
             $production = $_POST['production'];
-
             $post = wp_insert_post([
                 'post_title' => $name,
-                'post_type' => 'vehicle'
+                'post_type' => 'vehicle',
+                'post_status' => 'publish',
+                'post_author' => get_current_user_id()
             ]);
 
             if (isset($post)) {
@@ -31,8 +32,6 @@ class MP_API
             }
 
             WP_Notice_Manager::display_notice("Vehicle addedd successfully", "success");
-        } else {
-            WP_Notice_Manager::display_notice("Post type vehicle not registered", "error");
         }
     }
 

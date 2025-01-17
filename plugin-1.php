@@ -13,6 +13,7 @@ if (!defined("ABSPATH"))
 require_once plugin_dir_path(__FILE__) . "includes/notices.php";
 require_once plugin_dir_path(__FILE__) . 'includes/api.php';
 include plugin_dir_path(__FILE__) . "/admin/admin.php";
+require_once plugin_dir_path(__FILE__) . "includes/gb-blocks/vehicle-block.php";
 
 class MPlugin
 {

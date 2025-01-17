@@ -11,12 +11,12 @@ class MP_ADMIN
   {
     add_action('admin_menu', [$this, 'adminPage']);
     add_action('admin_menu', [$this, 'renderVehicles']);
+    add_action('init', [$this, 'create_vehicle_cpt']);
     register_activation_hook(__FILE__, [$this, 'flush_rewrite_rules_on_activation']);
   }
 
   public function renderVehicles()
   {
-    $vehicles = $this->get_vehicles_with_metadata();
     include_once plugin_dir_path(__FILE__) . 'partials/render-vehicles.php';
   }
 
@@ -75,15 +75,40 @@ class MP_ADMIN
     }
   }
 
-  public function get_vehicles_with_metadata()
+  function get_vehicles()
   {
-    $vehicles = get_posts(array(
-      'post_type' => 'vehicle',
-    ));
+    $args = array(
+      'post_type' => 'vehicle',  // Custom post type
+      'posts_per_page' => -1
+    );
 
-    foreach ($vehicles as &$vehicle) {
-      $vehicle->production = get_post_meta($vehicle->ID, 'production', true);
-      $vehicle->company = get_post_meta($vehicle->ID, 'company', true);
+    $query = new WP_Query($args);
+
+    if ($query->have_posts()) {
+      while ($query->have_posts()) {
+        $query->the_post();
+
+        // Get post title
+        $title = get_the_title();
+
+        // Get custom field (metadata)
+        $company = get_post_meta(get_the_ID(), 'company', true);
+        $production = get_post_meta(get_the_ID(), 'production', true);
+
+        // Output the data (for example, as an array)
+        $vehicle = [
+          'title' => $title,
+          'company' => $company,
+          'production' => $production,
+        ];
+
+        // You can return the result, or store it in an array for later use
+        $vehicles[] = $vehicle;
+      }
+
+      wp_reset_postdata();  // Reset global post data after custom query
+    } else {
+      $vehicles = [];  // No posts found
     }
 
     return $vehicles;

@@ -1,0 +1,24 @@
+.mp_vehicle_table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+
+.mp_vehicle_table th, .mp_vehicle_table td {
+    border: 1px solid #ddd;
+    padding: 8px;
+    text-align: left;
+}
+
+.mp_vehicle_table th {
+    background-color: #f2f2f2;
+    font-weight: bold;
+}
+
+.mp_vehicle_table tr:nth-child(even) {
+    background-color: #f9f9f9;
+}
+
+.mp_vehicle_table tr:hover {
+    background-color: #ddd;
+}

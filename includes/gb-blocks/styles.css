@@ -1,0 +1,26 @@
+.vehicle-list {
+    padding: 20px;
+    border: 1px solid #ddd;
+    margin: 20px 0;
+    background-color: #f9f9f9;
+    border-radius: 8px;
+}
+
+.vehicle-item {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 10px;
+    padding: 10px;
+    background-color: #fff;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+}
+
+.vehicle-item h3 {
+    margin: 0;
+}
+
+.vehicle-item p {
+    margin: 0;
+    color: #555;
+}
