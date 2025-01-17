@@ -9,7 +9,7 @@ class MP_ADMIN
   public function __construct()
   {
     add_action('admin_menu', [$this, 'adminPage']);
-    add_action('init', [$this, 'create_vehicle_cpt']);
+    register_activation_hook(__FILE__, [$this, 'flush_rewrite_rules_on_activation']);
   }
 
   public function adminPage()
@@ -24,7 +24,8 @@ class MP_ADMIN
 
   public function create_vehicle_cpt()
   {
-    if (!post_type_exists('vehicle')) {
+    // if (!post_type_exists('vehicle')) {
+    try {
       $labels = [
         'name' => 'Vehicles',
         'singular_name' => 'Vehicle',
@@ -58,23 +59,18 @@ class MP_ADMIN
       ];
 
       register_post_type('vehicle', $args);
+
+      error_log('Vehicle post type registered'); // Debug log
+      // }
+    } catch (Exception $err) {
+      error_log($err->getMessage());
     }
   }
 
-  public function add_vehicle_metabox()
+  public function flush_rewrite_rules_on_activation()
   {
-    add_meta_box(
-      'vehicle_metabox', // ID for the meta box
-      'Vehicle metabox', // Title of the meta box
-      '', // Callback function (can be left empty)
-      'vehicle', // Post type
-      'normal', // Context: where to display (normal, side, advanced)
-      'high' // Priority: high, low
-    );
+    $this->create_vehicle_cpt(); // Ensure the custom post type is registered
+    flush_rewrite_rules(); // Flush the rewrite rules to make sure 'vehicle' post type is recognized
   }
-
-
-
 }
 
-$mp_admin = new MP_ADMIN();

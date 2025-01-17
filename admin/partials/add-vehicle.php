@@ -8,7 +8,7 @@
         <input type="text" name="company">
         <label for="production">Production</label>
         <input type="date" name="production">
-        <input type="text" hidden name="action" value="<? esc_html(MP_API::$CREATE_MP_VEHICLE_ACTION) ?>">
+        <input type="text" hidden name="ACTION" value="CREATE_MP_VEHICLE_ACTION">
         <button type="submit">Add</button>
     </form>
 </div>

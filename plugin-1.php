@@ -10,38 +10,51 @@
 if (!defined("ABSPATH"))
   exit;
 
-require_once plugin_dir_path(__FILE__) . "includes/notices.php";
-require_once plugin_dir_path(__FILE__) . 'includes/api.php';
-
-class MPlugin
+function my_cpt()
 {
-  public function __construct()
-  {
-    add_action('admin_notices', [$this, 'display_custom_notices']);
-    add_action('admin_enqueue_scripts', [$this, 'enqueue_styles']);
-    add_action('admin_post_' . MP_API::$CREATE_MP_VEHICLE_ACTION, [$this, 'handle_create_vehicle_action']);
-  }
+  error_log('registering cpt');
+  $label = array(
+    'name' => 'properties',
+    'singular_name' => 'property'
+  );
 
-  public function display_custom_notices()
-  {
-    WP_Notice_Manager::display_notices();
-  }
+  $options = array(
+    'labels' => $label,
+    'public' => true,
+    'has_archive' => true,
+    'rewrite' => true,
+    'show_in_rest' => true
+  );
 
-  public function enqueue_styles()
-  {
-    wp_register_style('mp-css', plugin_dir_url(__FILE__) . 'admin/css/add-vehicle.css');
-    wp_enqueue_style('mp-css');
-  }
-
-  public function handle_create_vehicle_action()
-  {
-    $api = new MP_API();
-    $api->post();
-    wp_redirect(admin_url('admin.php?page=mp-plugin-settings'));
-    exit;
-  }
+  register_post_type('property', $options);
+  error_log('cpt registered');
 }
 
-$mp_plugin = new MPlugin();
+add_action('init', 'my_cpt');
 
-include_once plugin_dir_path(__FILE__) . "/admin/admin.php";
+// require_once plugin_dir_path(__FILE__) . "includes/notices.php";
+// require_once plugin_dir_path(__FILE__) . 'includes/api.php';
+// include plugin_dir_path(__FILE__) . "/admin/admin.php";
+
+// class MPlugin
+// {
+//   public function __construct()
+//   {
+//     add_action('admin_enqueue_scripts', [$this, 'enqueue_styles']);
+//     $mp_admin = new MP_ADMIN();
+//     add_action('init', array($mp_admin, 'create_vehicle_cpt'));
+//   }
+
+
+//   public function enqueue_styles()
+//   {
+//     wp_register_style('mp-css', plugin_dir_url(__FILE__) . 'admin/css/add-vehicle.css');
+//     wp_enqueue_style('mp-css');
+//     wp_register_style('mp-notice-css', plugin_dir_url(__FILE__) . 'includes/css/notice.css');
+//     wp_enqueue_style('mp-notice-css');
+//   }
+
+// }
+
+// $mp_plugin = new MPlugin();
+

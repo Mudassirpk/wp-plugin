@@ -1,0 +1,12 @@
+.notice {
+    font-size: 15px;
+    border-radius: 5px;
+}
+
+.error {
+    color:red;
+}
+
+.success{
+    color:green;
+}
