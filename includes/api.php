@@ -15,30 +15,28 @@ class MP_API
             $name = $_POST['name'];
             $company = $_POST['company'];
             $production = $_POST['production'];
-            if (post_type_exists('vehicle')) {
-                $post = get_post($name);
 
-                if (isset($post->ID)) {
-                    if (!get_post_meta($post->ID, 'name', true)) {
-                        add_post_meta($post->ID, 'name', $name);
-                    }
-                    if (!get_post_meta($post->ID, 'company', true)) {
-                        add_post_meta($post->ID, 'company', $company);
-                    }
-                    if (!get_post_meta($post->ID, 'company', true)) {
-                        add_post_meta($post->ID, 'production', $production);
-                    }
+            $post = wp_insert_post([
+                'post_title' => $name,
+                'post_type' => 'vehicle'
+            ]);
+
+            if (isset($post)) {
+                if (!get_post_meta($post, 'company', true)) {
+                    add_post_meta($post, 'company', $company);
                 }
-
-            } else {
-                WP_Notice_Manager::display_notice("Post type vehicle not registered", "error");
+                if (!get_post_meta($post, 'production', true)) {
+                    add_post_meta($post, 'production', $production);
+                }
             }
 
-
+            WP_Notice_Manager::display_notice("Vehicle addedd successfully", "success");
+        } else {
+            WP_Notice_Manager::display_notice("Post type vehicle not registered", "error");
         }
-
-
     }
+
+
 
 }
 

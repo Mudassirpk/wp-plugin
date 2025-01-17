@@ -5,11 +5,19 @@ class MP_ADMIN
 
   public $slug = 'mp-plugin-settings';
   public $options_group = 'mp-setting-options';
+  public $vehicles = null;
 
   public function __construct()
   {
     add_action('admin_menu', [$this, 'adminPage']);
+    add_action('admin_menu', [$this, 'renderVehicles']);
     register_activation_hook(__FILE__, [$this, 'flush_rewrite_rules_on_activation']);
+  }
+
+  public function renderVehicles()
+  {
+    $vehicles = $this->get_vehicles_with_metadata();
+    include_once plugin_dir_path(__FILE__) . 'partials/render-vehicles.php';
   }
 
   public function adminPage()
@@ -67,10 +75,26 @@ class MP_ADMIN
     }
   }
 
+  public function get_vehicles_with_metadata()
+  {
+    $vehicles = get_posts(array(
+      'post_type' => 'vehicle',
+    ));
+
+    foreach ($vehicles as &$vehicle) {
+      $vehicle->production = get_post_meta($vehicle->ID, 'production', true);
+      $vehicle->company = get_post_meta($vehicle->ID, 'company', true);
+    }
+
+    return $vehicles;
+  }
+
   public function flush_rewrite_rules_on_activation()
   {
     $this->create_vehicle_cpt(); // Ensure the custom post type is registered
     flush_rewrite_rules(); // Flush the rewrite rules to make sure 'vehicle' post type is recognized
   }
 }
+
+$mp_admin = new MP_ADMIN();
 
