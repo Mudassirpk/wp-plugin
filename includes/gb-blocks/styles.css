@@ -1,4 +1,7 @@
 .vehicle-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: 20px;
     padding: 20px;
     border: 1px solid #ddd;
     margin: 20px 0;
@@ -8,8 +11,8 @@
 
 .vehicle-item {
     display: flex;
+    flex-direction: column;
     justify-content: space-between;
-    margin-bottom: 10px;
     padding: 10px;
     background-color: #fff;
     border: 1px solid #ddd;
@@ -17,7 +20,7 @@
 }
 
 .vehicle-item h3 {
-    margin: 0;
+    margin: 0 0 10px 0;
 }
 
 .vehicle-item p {

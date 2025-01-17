@@ -20,6 +20,7 @@ class MPlugin
   public function __construct()
   {
     add_action('admin_enqueue_scripts', [$this, 'enqueue_styles']);
+    add_action('init',[$this,'enqueue_block_styles']);
   }
 
 
@@ -29,6 +30,12 @@ class MPlugin
     wp_enqueue_style('mp-css');
     wp_register_style('mp-notice-css', plugin_dir_url(__FILE__) . 'includes/css/notice.css');
     wp_enqueue_style('mp-notice-css');
+
+  }
+
+  public function enqueue_block_styles(){
+    wp_register_style('mp-block-vehicle-css', plugin_dir_url(__FILE__) . 'includes/gb-blocks/styles.css');
+    wp_enqueue_style('mp-block-vehicle-css');
   }
 
 }

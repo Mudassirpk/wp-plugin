@@ -44,21 +44,9 @@ function render_vehicle_block($attributes)
     // Fetch vehicle data using REST API or WP_Query
     $vehicles = get_vehicles(); // Custom function that returns vehicles
 
-    if (empty($vehicles)) {
-        return '<p>No vehicles found.</p>';
-    }
-
-    $output = '<div class="vehicle-list">';
-    foreach ($vehicles as $vehicle) {
-        $output .= '<div class="vehicle-item">';
-        $output .= '<h3>' . esc_html($vehicle['title']) . '</h3>';
-        $output .= '<p><strong>Company:</strong> ' . esc_html($vehicle['company']) . '</p>';
-        $output .= '<p><strong>Production:</strong> ' . esc_html($vehicle['production']) . '</p>';
-        $output .= '</div>';
-    }
-    $output .= '</div>';
-
-    return $output;
+    ob_start();
+    include plugin_dir_path(__FILE__) . 'partials/vehicle-list.php';
+    return ob_get_clean();
 }
 
 // Custom function to get vehicles
